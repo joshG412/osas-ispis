@@ -51,4 +51,18 @@ public class SubmissionController {
     ) {
         return ResponseEntity.ok(submissionService.updateSubmissionStatus(id, request));
     }
+    // ... other code in SubmissionController
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<List<SubmissionResponse>> getMySubmissions(
+            @AuthenticationPrincipal UserAccount user
+    ) {
+        // Find the linked Student profile for the authenticated UserAccount
+        Student student = studentRepository.findByUserAccountId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Student profile not found for user"));
+
+        return ResponseEntity.ok(submissionService.getSubmissionsByStudent(student));
+    }
+
 }

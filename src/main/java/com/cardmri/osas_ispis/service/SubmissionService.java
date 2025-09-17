@@ -68,4 +68,14 @@ public class SubmissionService {
                 .requirementTitle(submission.getRequirement().getTitle())
                 .build();
     }
+    // ... other code in SubmissionService
+
+    // For a student to see their own submissions
+    public List<SubmissionResponse> getSubmissionsByStudent(Student student) {
+        return submissionRepository.findAllByStudentId(student.getId())
+                .stream()
+                .map(this::mapToSubmissionResponse)
+                .collect(Collectors.toList());
+    }
+
 }
