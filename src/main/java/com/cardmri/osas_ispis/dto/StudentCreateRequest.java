@@ -10,4 +10,5 @@ public class StudentCreateRequest {
     private String lastName;
     private String yearLevel;
     private Long userAccountId; // The ID of the UserAccount to link this profile to
+    private Long programId;
 }

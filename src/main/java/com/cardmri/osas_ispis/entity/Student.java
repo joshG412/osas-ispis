@@ -18,8 +18,14 @@ public class Student {
 
     private String lastName;
 
+    private String phoneNumber;
+
     private String yearLevel;
 
+    @ManyToOne(fetch = FetchType.LAZY) // LAZY is good here, we don't always need the full Program object.
+    @JoinColumn(name = "program_id")   // This will create a 'program_id' foreign key column in the 'students' table.
+    private Program program;
+    
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_account_id", referencedColumnName = "id")
     private UserAccount userAccount;

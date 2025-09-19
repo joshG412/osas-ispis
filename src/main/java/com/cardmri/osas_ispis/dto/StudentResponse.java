@@ -13,4 +13,7 @@ public class StudentResponse {
     private String lastName;
     private String yearLevel;
     private String email; // Include the user's email for context
+    private String phoneNumber;
+    private String programCode;
+    
 }

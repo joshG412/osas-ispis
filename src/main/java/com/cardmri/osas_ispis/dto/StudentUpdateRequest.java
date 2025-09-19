@@ -9,4 +9,5 @@ public class StudentUpdateRequest {
     private String firstName;
     private String lastName;
     private String yearLevel;
+    private Long programId;
 }

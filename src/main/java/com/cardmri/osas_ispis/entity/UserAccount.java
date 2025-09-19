@@ -1,6 +1,6 @@
 package com.cardmri.osas_ispis.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.*; // <-- ENSURE THIS IMPORT IS PRESENT
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,13 +8,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "user_accounts")
-public class UserAccount implements UserDetails { // <<--- CHANGE 1: Implement UserDetails
+public class UserAccount implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +27,13 @@ public class UserAccount implements UserDetails { // <<--- CHANGE 1: Implement U
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    // =================================================================
+    // THIS BLOCK HAS BEEN CORRECTED
+    // =================================================================
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
     private Role role;
+    // =================================================================
 
 
     // =================================================================
@@ -37,33 +42,31 @@ public class UserAccount implements UserDetails { // <<--- CHANGE 1: Implement U
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // This converts our single Role enum into a list of authorities that Spring Security can understand.
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
     public String getUsername() {
-        // Our "username" is the user's email address.
         return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // For this project, accounts never expire.
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Accounts are never locked.
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Passwords never expire.
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // All accounts are enabled.
+        return true;
     }
 }

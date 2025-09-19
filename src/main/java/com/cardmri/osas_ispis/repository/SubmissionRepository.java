@@ -9,4 +9,7 @@ import java.util.List;
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     List<Submission> findAllByStudentId(Long studentId);
 
+    long countByStatus(String status);
+    long countByRequirementType(String requirementType);
+
 }
